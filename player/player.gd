@@ -60,3 +60,17 @@ func _physics_process(delta):
 
 	on_air_time += delta
 	prev_jump_pressed = jump
+	
+	if Input.is_action_pressed("fire"):
+		fire()
+
+func fire():
+	var colliding = self.raycast(get_global_mouse_position())
+	if colliding:
+		if colliding.collider.get_class() == 'TileMap':
+			var map_pos = $"../TileMap".world_to_map(colliding.position)
+			$"../TileMap".set_cellv(map_pos, -1)
+
+func raycast(to):
+	var space_state = get_world_2d().direct_space_state
+	return space_state.intersect_ray(self.position, to, [self])
