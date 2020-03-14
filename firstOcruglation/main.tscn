@@ -13,7 +13,7 @@ tile_set = ExtResource( 1 )
 format = 1
 
 [node name="player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 129.508, 49.6443 )
+position = Vector2( 153.475, -621.432 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
