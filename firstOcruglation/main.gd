@@ -6,10 +6,13 @@ const HEIGHT_ = 100 # высота земной коры
 
 const CENTER_Y = 4 # середина мира по вертикали
 
+const NOISE_PREDEL = -0.05
 const generate_to_end = 30 # за сколко ячеек до конца начинать новую генерацию
+
 
 var current_world_end = 0 # текущий край земли
 var delta_sum = 0 # сумма дельты для проверки раз в секунду
+
 
 
 var noise
@@ -20,9 +23,9 @@ func _ready():
 	noise = OpenSimplexNoise.new()
 	noise.seed = randi()
 
-	noise.octaves = 1
+	noise.octaves = 4
 	noise.period = 8
-	noise.lacunarity = 1
+	noise.lacunarity = 2
 	noise.persistence = 0.25
 	generate_world_with_caves()
 
@@ -31,8 +34,11 @@ func generate_world_with_caves():
 		for y in range(0, current_world_end + HEIGHT_):
 			noise.get_noise_2d(x, y)
 			var qwe = noise.get_noise_2d(x, y)
-			if qwe > 0:
-				$TileMap.set_cellv(Vector2(x, y), 0)
+			if qwe >= NOISE_PREDEL:
+				var tile_index = 0
+				if $TileMap.get_cell(x, y-1) != -1:
+					tile_index = 1
+				$TileMap.set_cellv(Vector2(x, y), tile_index)
 
 	
 func generate_world_flat():

@@ -6,7 +6,7 @@ const WALK_FORCE = 600
 const WALK_MIN_SPEED = 10
 const WALK_MAX_SPEED = 200
 const STOP_FORCE = 1300
-const JUMP_SPEED = 400
+const JUMP_SPEED = 600
 const JUMP_MAX_AIRBORNE_TIME = 0.2
 
 const SLIDE_STOP_VELOCITY = 1.0 # Pixels/second
@@ -61,14 +61,14 @@ func _physics_process(delta):
 	on_air_time += delta
 	prev_jump_pressed = jump
 	
-	if Input.is_action_pressed("fire"):
+	if Input.is_action_just_pressed("fire"):
 		fire()
 
 func fire():
 	var colliding = self.raycast(get_global_mouse_position())
 	if colliding:
 		if colliding.collider.get_class() == 'TileMap':
-			var map_pos = $"../TileMap".world_to_map(colliding.position)
+			var map_pos = $"../TileMap".world_to_map(colliding.position - colliding.normal)
 			$"../TileMap".set_cellv(map_pos, -1)
 
 func raycast(to):
