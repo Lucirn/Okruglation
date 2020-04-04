@@ -63,11 +63,6 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("fire"):
 		fire()
-	
-func ready():
-	add_to_group("Player")
-	
-	
 
 func fire():
 	var colliding = self.raycast(get_global_mouse_position())
