@@ -16,5 +16,13 @@ func _ready():
 #	pass
 
 
-func _on_FirsrButton_pressed():
+
+
+func _on_Button_pressed():
 	get_tree().change_scene("res://firstOcruglation/main.tscn")
+	pass # Replace with function body.
+
+
+func _on_Button3_pressed():
+	get_tree().quit()
+	pass # Replace with function body.

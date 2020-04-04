@@ -13,6 +13,8 @@ const generate_to_end = 30 # за сколко ячеек до конца нач
 var current_world_end = 0 # текущий край земли
 var delta_sum = 0 # сумма дельты для проверки раз в секунду
 
+var enemy_tscn = preload("res://enemy/firstEnemy/firstEnemy.tscn")
+
 
 var noise
 
@@ -27,7 +29,23 @@ func _ready():
 	noise.lacunarity = 2
 	noise.persistence = 0.25
 	generate_world_with_caves()
+	
+	generate_enemy(10)
 
+func create_enemy(pos):
+	var enemy = enemy_tscn.instance()
+	enemy.position = pos
+	self.add_child(enemy)
+
+func generate_enemy(step):
+	for x in range(current_world_end + rand_range(-5, 5), current_world_end + WIDTH):
+		if x % step == 0:
+			for y in range(0, HEIGHT_):
+				if $TileMap.get_cell(x, y) != -1 and $TileMap.get_cell(x, y-1) == -1:
+					var pos = $TileMap.map_to_world(Vector2(x, y-1), true)
+					create_enemy(pos)
+		
+		
 func generate_world_with_caves():
 	for x in range(current_world_end, current_world_end + WIDTH):
 		for y in range(0, current_world_end + HEIGHT_):
@@ -56,3 +74,16 @@ func generate_world_flat():
 #			generate_world()
 #		delta_sum = 0
 
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			if event.button_index == BUTTON_WHEEL_UP:
+				print(123)
+				if self.scale.x < 2:
+					self.scale += Vector2(0.1, 0.1)
+			if event.button_index == BUTTON_WHEEL_DOWN:
+				print(321)
+				if self.scale.x > 0.1:
+					self.scale -= Vector2(0.1, 0.1)
+					print(self.get_children())
+			
